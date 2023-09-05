@@ -1,10 +1,15 @@
+import { Activity } from "../types/Activity";
+import LoginForm from "../components/LoginForm";
+import { UserRole } from "../types/User";
 
-export default function LoginPage():JSX.Element{
-return(
-    <form>
-    <input  type="text" placeholder="Username" />
-    <input type="password" placeholder="password" />
-    <button type="submit">Log in!</button>
-</form>
-)
+interface LoginPageProps{
+onLogin:(username:string,role:UserRole,activities:Activity[],password:string) => void;
 }
+
+function LoginPage(props:LoginPageProps){
+    const {onLogin} = props;
+    return(
+        <LoginForm onLogin={onLogin}/>
+    )
+}
+export default LoginPage;
