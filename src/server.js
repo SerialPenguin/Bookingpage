@@ -5,6 +5,7 @@ export function makeServer() {
     models: {
       user: Model,
       activity: Model, // Add a model for activities
+      booking: Model,
     },
     
     seeds(server) {
@@ -78,6 +79,19 @@ export interface Activity{
 
       this.get('/activities', (schema) => {
         return new Response(200, { 'Content-Type': 'application/json' }, schema.db.activities);
+      });
+
+      this.post('/bookings', (schema, request) => {
+        console.log('Received booking request:', request.requestBody);
+        try {
+          const bookingData = JSON.parse(request.requestBody);
+          const booking = schema.bookings.create(bookingData);
+          console.log('Created booking:', booking);
+          return booking;
+        } catch (error) {
+          console.error('Error creating booking:', error);
+          return new Response(500); // Return a 500 status code on error
+        }
       });
 
       console.log("TestTest");
