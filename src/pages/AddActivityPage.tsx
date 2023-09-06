@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface AddActivityPageProps {
   activities: Activity[];
   setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
-  onAddActivity: (id: number, title: string, content: string, date: string, maxCount: number) => void;
+  onAddActivity: (id: number, title: string, content: string, date: Date, maxCount: number) => void;
 }
 
 function AddActivityPage(props: AddActivityPageProps): JSX.Element {
@@ -27,7 +27,7 @@ function AddActivityPage(props: AddActivityPageProps): JSX.Element {
           <li key={activity.id}>
             <h3>{activity.title}</h3>
             <p>{activity.content}</p>
-            <p>Date: {activity.date}</p>
+            <p>Date: {activity.date.toLocaleDateString()}</p>
             <p>Max Count: {activity.maxCount}</p>
           </li>
         ))}

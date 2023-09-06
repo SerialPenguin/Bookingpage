@@ -5,14 +5,14 @@ import { Activity } from '../types/Activity';
 interface AddActivityFormProps {
   activities:Activity[]
   setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
-  onAddActivity: (id: number, title: string, content: string, date: string, maxCount: number) => void;
+  onAddActivity: (id: number, title: string, content: string, date: Date, maxCount: number) => void;
 }
 
 function AddActivityForm(props: AddActivityFormProps) {
     const { onAddActivity } = props;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState<Date>(new Date());
   const [maxCount, setMaxCount] = useState('');
 
   function handleSubmit(event: React.FormEvent) {
@@ -35,7 +35,7 @@ function AddActivityForm(props: AddActivityFormProps) {
     // Återställ formuläret efter att aktiviteten har lagts till
     setTitle('');
     setContent('');
-    setDate('');
+    setDate(new Date());
     setMaxCount('');
   }
   
@@ -61,8 +61,8 @@ function AddActivityForm(props: AddActivityFormProps) {
         Date:
         <input
           type="text"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={date.toLocaleDateString()}
+          onChange={(e) => setDate(new Date(e.target.value))}
         />
       </label>
       <label>

@@ -3,7 +3,7 @@ export interface Activity{
     id:number;
     title:string;
     content:string;
-    date:string;
+    date:Date;
 	maxCount: number;	
     
 }

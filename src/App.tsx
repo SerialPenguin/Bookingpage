@@ -9,7 +9,7 @@ import { Activity } from './types/Activity';
 import PageBanner from './components/PageBanner';
 import { UserRole } from './types/User';
 import AddActivityPage from './pages/AddActivityPage';
-
+import { User } from './types/User';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({ username: '', role: 'USER' as UserRole, activities: [] as Activity[], password: '' });
@@ -25,7 +25,7 @@ function App() {
       console.log(activities)
   }, []);
 
-  function onAddActivity(id: number, title: string, content: string, date: string, maxCount: number) {
+  function onAddActivity(id: number, title: string, content: string, date: Date, maxCount: number) {
     // Skapa en ny aktivitet med de givna parametrarna
     const newActivity: Activity = {
       id,
@@ -46,16 +46,37 @@ function App() {
     const storedUserData = localStorage.getItem("loggedInUser");
     if (storedUserData) {
       const user = JSON.parse(storedUserData);
+      console.log(user)
+      const newUser: User = convertUser(user.username, user.role,user.activities,user.password)
       setIsLoggedIn(true);
-      setLoggedInUser(user);
+      setLoggedInUser(newUser);
     }
     console.log(loggedInUser);
   }, []);
+function convertUser(username:string,role:UserRole, activities:Activity[],password:string):User{
+  const newUser: User = {
+    username: username,
+    role: role,
+    activities: activities.map((activity:any) => {
+      const newActivity:Activity = {
+        id: activity.id,
+        title : activity.title,
+        content: activity.content,
+        date: new Date(activity.date),
+        maxCount: activity.maxCount
+      }
+      return newActivity
+    }),
+    password: password,
+  }
+  return newUser;
+}
 
   function handleLogin(username: string, role: UserRole, activities: Activity[], password: string) {
     setIsLoggedIn(true);
     console.log('in app');
-    setLoggedInUser({ username, role, activities, password });
+
+    setLoggedInUser(convertUser( username, role, activities, password ));
     localStorage.setItem("loggedInUser", JSON.stringify({ username, role, activities }))
   }
 

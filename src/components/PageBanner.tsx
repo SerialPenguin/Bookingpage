@@ -18,11 +18,15 @@ export default function PageBanner(props:PageBannerProps):JSX.Element{
         <p>Your booked activities:
             {/*här behövs mer när vi lagt in rätt under activity*/}
             <ul>
-                {props.activities.map((activity) => (
-                    <li key={activity.id}>
+                {props.activities.map((activity) =>{ 
+                    console.log(activity)
+                    return <li key={activity.id}>
+                        <p>{activity.title}</p>
+
+                        <p>{activity.date.toLocaleDateString()}</p>
 
                     </li>
-                ))}
+                })}
             </ul>
         </p>
 
