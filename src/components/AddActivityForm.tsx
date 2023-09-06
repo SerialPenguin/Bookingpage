@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Activity } from '../types/Activity';
 
 interface AddActivityFormProps {
-  onAddActivity: (activity: Activity) => void;
+  activities:Activity[]
+  setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
+  onAddActivity: (id: number, title: string, content: string, date: string, maxCount: number) => void;
 }
 
-function AddActivityForm({ onAddActivity }: AddActivityFormProps) {
+function AddActivityForm(props: AddActivityFormProps) {
+    const { onAddActivity } = props;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState('');
@@ -14,7 +17,7 @@ function AddActivityForm({ onAddActivity }: AddActivityFormProps) {
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-
+  
     const newActivity: Activity = {
       id: Math.random(), // Generera ett unikt ID, eller använd en annan strategi
       title,
@@ -22,23 +25,20 @@ function AddActivityForm({ onAddActivity }: AddActivityFormProps) {
       date,
       maxCount: parseInt(maxCount, 10),
     };
-
-    // Skicka en POST-förfrågan till Mirage-databasen för att lägga till aktiviteten
-    axios
-      .post('/activities', newActivity)
-      .then((response) => {
-        console.log('Activity added:', response.data);
-        onAddActivity(newActivity); // Skicka tillbaka den nya aktiviteten till förälderkomponenten
-        // Återställ formuläret efter att aktiviteten har lagts till
-        setTitle('');
-        setContent('');
-        setDate('');
-        setMaxCount('');
-      })
-      .catch((error) => {
-        console.error('Error adding activity:', error);
-      });
+  
+    // Anropa onSubmit-funktionen med den nya aktiviteten
+    console.log(newActivity);
+  
+    // Använd de lokala staterna direkt
+    onAddActivity(newActivity.id, newActivity.title, newActivity.content, newActivity.date, newActivity.maxCount);
+  
+    // Återställ formuläret efter att aktiviteten har lagts till
+    setTitle('');
+    setContent('');
+    setDate('');
+    setMaxCount('');
   }
+  
 
   return (
     <form onSubmit={handleSubmit}>
