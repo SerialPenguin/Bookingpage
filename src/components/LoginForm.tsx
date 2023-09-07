@@ -6,6 +6,7 @@ import { UserRole } from "../types/User";
 
 interface LoginFormProps {
   onLogin: (
+    id:number,
     username: string,
     role: UserRole,
     activities: Activity[],
@@ -32,7 +33,7 @@ function LoginForm(props: LoginFormProps): JSX.Element {
           console.log('Logged in as:', user.name, user.role,user.activities, user.password);
   
           // Anropa onLogin-funktionen för att utföra inloggningen
-          props.onLogin(user.name, user.role, user.activities, user.password);
+          props.onLogin(user.id,user.name, user.role, user.activities, user.password);
             if(user.role === "ADMIN"){
                 navigate("/admin")
             }else{navigate("/bookings")}

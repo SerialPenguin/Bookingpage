@@ -10,11 +10,12 @@ import PageBanner from './components/PageBanner';
 import { UserRole } from './types/User';
 import AddActivityPage from './pages/AddActivityPage';
 import { User } from './types/User';
+import ViewUsers from './pages/ViewUsers';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState({ username: '', role: 'USER' as UserRole, activities: [] as Activity[], password: '' });
+  const [loggedInUser, setLoggedInUser] = useState({ id:0, username: '', role: 'USER' as UserRole, activities: [] as Activity[], password: '' });
   const [activities, setActivities] = useState([] as Activity[]);
-
+ 
 
 
   useEffect(() => {
@@ -47,17 +48,18 @@ function App() {
     if (storedUserData) {
       const user = JSON.parse(storedUserData);
       console.log(user)
-      const newUser: User = convertUser(user.username, user.role,user.activities,user.password)
+      const newUser: User = convertUser( user.id,user.username, user.role,user.activities,user.password)
       setIsLoggedIn(true);
       setLoggedInUser(newUser);
     }
     console.log(loggedInUser);
   }, []);
-function convertUser(username:string,role:UserRole, activities:Activity[],password:string):User{
+function convertUser(id:number,username:string,role:UserRole, activities:Activity[],password:string):User{
   const newUser: User = {
+    id:id,
     username: username,
     role: role,
-    activities: activities.map((activity:any) => {
+    activities: activities.map((activity:Activity) => {
       const newActivity:Activity = {
         id: activity.id,
         title : activity.title,
@@ -72,12 +74,20 @@ function convertUser(username:string,role:UserRole, activities:Activity[],passwo
   return newUser;
 }
 
-  function handleLogin(username: string, role: UserRole, activities: Activity[], password: string) {
+  function handleLogin(id:number,username: string, role: UserRole, activities: Activity[], password: string) {
     setIsLoggedIn(true);
     console.log('in app');
 
-    setLoggedInUser(convertUser( username, role, activities, password ));
+    setLoggedInUser(convertUser( id,username, role, activities, password ));
     localStorage.setItem("loggedInUser", JSON.stringify({ username, role, activities }))
+  }
+
+  function updateUserActivities(activity: Activity) {
+    // Skapa en kopia av användarens aktivitetslista och lägg till den nya aktiviteten
+    const updatedActivities = [...loggedInUser.activities, activity];
+    
+    // Uppdatera loggedInUser med den uppdaterade aktivitetslistan
+    setLoggedInUser({ ...loggedInUser, activities: updatedActivities });
   }
 
   return (
@@ -91,7 +101,7 @@ function convertUser(username:string,role:UserRole, activities:Activity[],passwo
               <>
                 {isLoggedIn && <PageBanner {...loggedInUser} />}
                
-                  <BookingPage activities={activities}/> 
+                  <BookingPage loggedInUser={loggedInUser} upDateUserActivities={updateUserActivities} activities={activities}/> 
                 
               </>
             }
@@ -102,7 +112,7 @@ function convertUser(username:string,role:UserRole, activities:Activity[],passwo
               <>
                 {isLoggedIn && <PageBanner {...loggedInUser} />}
                
-                  <AdminPage activities={activities}/> 
+                  <AdminPage loggedInUser={loggedInUser} upDateUserActivities={updateUserActivities} activities={activities}/> 
                 
               </>
             }
@@ -110,6 +120,7 @@ function convertUser(username:string,role:UserRole, activities:Activity[],passwo
                     <Route path="/add" element={<AddActivityPage activities={activities} setActivities={setActivities} onAddActivity={onAddActivity} />} />
 
         </Route>
+        <Route path='/view' element={<ViewUsers/>}/>
       </Routes>
     </div>
   );

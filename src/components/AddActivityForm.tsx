@@ -5,7 +5,7 @@ import { Activity } from '../types/Activity';
 interface AddActivityFormProps {
   activities:Activity[]
   setActivities: React.Dispatch<React.SetStateAction<Activity[]>>;
-  onAddActivity: (id: number, title: string, content: string, date: Date, maxCount: number) => void;
+  onAddActivity: (id: number, title: string, content: string, date: Date,maxCount: number) => void;
 }
 
 function AddActivityForm(props: AddActivityFormProps) {
@@ -13,6 +13,7 @@ function AddActivityForm(props: AddActivityFormProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [date, setDate] = useState<Date>(new Date());
+
   const [maxCount, setMaxCount] = useState('');
 
   function handleSubmit(event: React.FormEvent) {

@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Activity } from '../types/Activity';
 import BookingButton from '../components/BookingButton';
-
+import { User } from '../types/User';
 
 interface BookinPageProps{
   activities: Activity[];
-  
+  upDateUserActivities:(activity: Activity) => void;
+  loggedInUser:User
 }
 function BookingPage(props:BookinPageProps): JSX.Element {
   //const [activities, setActivities] = useState<Activity[]>([]);
-  const { activities} = props;
+  const { activities, upDateUserActivities, loggedInUser} = props;
   const [filteredActivities, setFilteredActivities] = useState<Activity[]>([]);
   
   return (
@@ -24,10 +25,11 @@ function BookingPage(props:BookinPageProps): JSX.Element {
           <li key={activity.id}>
             <h4>{activity.title}</h4>
             <p>{activity.content}</p>
-            <p>Date: {new Date(activity.date).toLocaleDateString('en-GB')}</p>
+            <p>Date: {new Date(activity.date).toLocaleString('en-GB')}</p>
+         
             <p>Max Count: {activity.maxCount}</p>
             {/* Pass the activity as a prop to BookingButton */}
-            <BookingButton activity={activity} />
+            <BookingButton loggedInUser={loggedInUser} updateUserActivities={props.upDateUserActivities} activity={activity} />
           </li>
         ))}
       </ul>

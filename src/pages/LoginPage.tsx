@@ -3,7 +3,7 @@ import LoginForm from "../components/LoginForm";
 import { UserRole } from "../types/User";
 
 interface LoginPageProps{
-onLogin:(username:string,role:UserRole,activities:Activity[],password:string) => void;
+onLogin:(id:number,username:string,role:UserRole,activities:Activity[],password:string) => void;
 }
 
 function LoginPage(props:LoginPageProps){

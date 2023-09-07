@@ -15,20 +15,23 @@ export default function PageBanner(props:PageBannerProps):JSX.Element{
         <h2>Pagebanner</h2>
         <p>Logged in as: {props.username}</p>
         <p>Your Role is: {props.role}</p>
-        <p>Your booked activities:
+        <p>Your booked activities:  </p>
             {/*här behövs mer när vi lagt in rätt under activity*/}
             <ul>
                 {props.activities.map((activity) =>{ 
-                    console.log(activity)
+                    
                     return <li key={activity.id}>
                         <p>{activity.title}</p>
-
-                        <p>{activity.date.toLocaleDateString()}</p>
+                        <p>{activity.content}</p>
+                        
+                        <p>{activity.maxCount}</p>
+                         <p>{activity.date.toLocaleString()}</p>
+                        
 
                     </li>
                 })}
             </ul>
-        </p>
+      
 
 
         </>

@@ -10,6 +10,7 @@ export function makeServer() {
       user: Model,
       activity: Model,
       booking: Model,
+      time:Model,
     },
     
     seeds(server) {
@@ -25,42 +26,51 @@ export function makeServer() {
         name: 'Anna',
         password: 'AnnaPassword',
         role: 'ADMIN',
-        activities: [],
+        activities: [ ],
       });
       server.create('user', {
         id: 7,
         name: 'Roger',
         password: 'RogerPassword',
         role: 'USER',
-        activities: [{id:1,title:'boxing',content:"boxing in mud", date:new Date(2023,6,13),maxCount:10}],
+        activities: [
+          {
+            id: 1,
+            title: 'Boxing',
+            content: 'Boxing in the mud',
+            date: new Date(2023, 5, 20, 14, 0),
+            maxCount: 10,
+          },
+        ],
       });
+      
       
       server.create('activity', { 
         id: 1,
         title: 'Boxing',
         content: 'Boxing in the mud',
-        date: new Date(2023, 5, 20), 
+        date:new Date(2023, 9, 7, 14, 0), 
         maxCount: 20,
       });
       server.create('activity', { 
         id: 2,
         title: 'Spinning',
         content: 'Indoor cycling',
-        date: new Date(2023, 8, 5),
+        date: new Date(2023, 8, 5, 12, 30),
         maxCount: 7,
       });
       server.create('activity', {
         id: 3, 
         title: 'Gym',
         content: 'Strength training',
-        date: new Date(2023, 9, 19),
+        date: new Date(2023,9,13, 9, 0),
         maxCount: 2,
       });
       server.create('activity', { 
         id: 4,
         title: 'Aerobics',
         content: 'Cardio workout',
-        date: new Date(2023, 9, 13),
+        date: new Date(2023, 9, 13, 10, 30),
         maxCount: 15,
       });
     },

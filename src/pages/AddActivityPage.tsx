@@ -20,17 +20,31 @@ function AddActivityPage(props: AddActivityPageProps): JSX.Element {
       {/* Rendera AddActivityForm och skicka med funktionen onAdd */}
       <AddActivityForm onAddActivity={onAddActivity} activities={activities} setActivities={setActivities}  />
 
+
+      <ul>
+                {props.activities.map((activity) =>{ 
+                    console.log(activity)
+                    return <li key={activity.id}>
+                        <p>{activity.title}</p>
+
+                       {/*  <p>{activity.date.toLocaleDateString()}</p>*/}
+
+                    </li>
+                })}
+            </ul>
       {/* Rendera listan med aktiviteter */}
       <h2>Activities:</h2>
       <ul>
-        {activities.map((activity) => (
-          <li key={activity.id}>
+        {activities.map((activity) => {
+         console.log(activity)
+         return <li key={activity.id}>
+               
             <h3>{activity.title}</h3>
             <p>{activity.content}</p>
-            <p>Date: {activity.date.toLocaleDateString()}</p>
+            <p>Date: {activity.date.toLocaleString()}</p>
             <p>Max Count: {activity.maxCount}</p>
           </li>
-        ))}
+})}
       </ul>
     </div>
   );
