@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types/User";
+import "../stylesheet/pages/_LoginPage.scss"
 
 interface LoginFormProps {
   onLogin: (
@@ -53,6 +54,7 @@ function LoginForm(props: LoginFormProps): JSX.Element {
   
 
   return (
+    <div className="login-form-wrapper">
     <form onSubmit={handleSubmit}>
       <input
         type="text"
@@ -68,6 +70,8 @@ function LoginForm(props: LoginFormProps): JSX.Element {
       />
       <button type="submit">Log in!</button>
     </form>
+    
+    </div>
   );
 }
 
