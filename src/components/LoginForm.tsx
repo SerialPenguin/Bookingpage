@@ -30,10 +30,10 @@ function LoginForm(props: LoginFormProps): JSX.Element {
       .then((response) => {
         const user = response.data;
         if (user) {
-          console.log('Logged in as:', user.name, user.role,user.activities, user.password);
+          console.log('Logged in as:', user.username, user.role,user.activities, user.password);
   
           // Anropa onLogin-funktionen för att utföra inloggningen
-          props.onLogin(user.id,user.name, user.role, user.activities, user.password);
+          props.onLogin(user.id,user.username, user.role, user.activities, user.password);
             if(user.role === "ADMIN"){
                 navigate("/admin")
             }else{navigate("/bookings")}

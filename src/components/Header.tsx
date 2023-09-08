@@ -1,4 +1,4 @@
-
+import "../stylesheet/components/_Header.scss"
 function Header():JSX.Element{
 return(
     <header>

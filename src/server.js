@@ -16,21 +16,21 @@ export function makeServer() {
     seeds(server) {
       server.create('user', { 
         id: 5,
-        name: 'Alex',
+        username: 'Alex',
         password: 'AlexPassword',
         role: 'USER',
         activities: [],
       });
       server.create('user', { 
         id: 6,
-        name: 'Anna',
+        username: 'Anna',
         password: 'AnnaPassword',
         role: 'ADMIN',
         activities: [ ],
       });
       server.create('user', {
         id: 7,
-        name: 'Roger',
+        username: 'Roger',
         password: 'RogerPassword',
         role: 'USER',
         activities: [
@@ -42,7 +42,7 @@ export function makeServer() {
             maxCount: 10,
           },
         ],
-      });
+    });
       
       
       server.create('activity', { 
@@ -80,7 +80,7 @@ export function makeServer() {
         const { queryParams } = request;
         const { username, password } = queryParams;
 
-        const user = schema.users.findBy({ name: username, password });
+        const user = schema.users.findBy({ username: username, password });
 
         if (user) {
           return new Response(200, { 'Content-Type': 'application/json' }, user);
@@ -89,9 +89,16 @@ export function makeServer() {
         }
       });
 
+      this.get('/users', (schema) => {
+        const users = schema.db.users;
+        return new Response(200, { 'Content-Type': 'application/json' }, users);
+      });
+      
+      
+
       this.post('/login', (schema, request) => {
         const { username, password } = JSON.parse(request.requestBody);
-        const user = schema.db.users.findBy({ name: username, password });
+        const user = schema.db.users.findBy({ username: username, password });
       
         if (user) {
           return new Response(200, { 'Content-Type': 'application/json' }, user);

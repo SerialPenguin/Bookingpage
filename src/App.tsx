@@ -15,7 +15,18 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({ id:0, username: '', role: 'USER' as UserRole, activities: [] as Activity[], password: '' });
   const [activities, setActivities] = useState([] as Activity[]);
- 
+  const [users, setUsers]= useState([] as User[])
+
+
+  useEffect(() => {
+    fetch('/users')
+      .then((response) => response.json())
+      .then((data) => {
+        setUsers(data);
+        console.log(data); // Här loggar du den hämtade användardata
+      });
+  }, []);
+  
 
 
   useEffect(() => {
@@ -23,8 +34,10 @@ function App() {
     fetch('/activities') // Använd rätt endpoint här
       .then((response) => response.json())
       .then((data) => setActivities(data)); // Uppdatera aktivitetsstaten med data från Mirage
-      console.log(activities)
+      
   }, []);
+
+ 
 
   function onAddActivity(id: number, title: string, content: string, date: Date, maxCount: number) {
     // Skapa en ny aktivitet med de givna parametrarna
@@ -90,6 +103,25 @@ function convertUser(id:number,username:string,role:UserRole, activities:Activit
     setLoggedInUser({ ...loggedInUser, activities: updatedActivities });
   }
 
+  //nytt under:
+
+   // Funktion för att ta bort en aktivitet från användarens lista av aktiviteter
+   function handleRemoveActivity(activityId: number) {
+    // Skapa en kopia av användarens aktuella aktivitetslista
+    const updatedActivities = [...loggedInUser.activities];
+
+    // Hitta indexet för den aktivitet som ska tas bort
+    const indexToRemove = updatedActivities.findIndex((activity) => activity.id === activityId);
+
+    // Ta bort aktiviteten om den hittades
+    if (indexToRemove !== -1) {
+      updatedActivities.splice(indexToRemove, 1);
+
+      // Uppdatera användarens aktivitetslista med den uppdaterade listan
+      setLoggedInUser({ ...loggedInUser, activities: updatedActivities });
+    }
+  }
+
   return (
     <div className="App">
       <Routes>
@@ -99,7 +131,7 @@ function convertUser(id:number,username:string,role:UserRole, activities:Activit
             path="/bookings"
             element={
               <>
-                {isLoggedIn && <PageBanner {...loggedInUser} />}
+                {isLoggedIn && <PageBanner handleRemoveActivity={handleRemoveActivity} {...loggedInUser} />}
                
                   <BookingPage loggedInUser={loggedInUser} upDateUserActivities={updateUserActivities} activities={activities}/> 
                 
@@ -110,7 +142,7 @@ function convertUser(id:number,username:string,role:UserRole, activities:Activit
             path="/admin"
             element={
               <>
-                {isLoggedIn && <PageBanner {...loggedInUser} />}
+                {isLoggedIn && <PageBanner handleRemoveActivity={handleRemoveActivity} {...loggedInUser} />}
                
                   <AdminPage loggedInUser={loggedInUser} upDateUserActivities={updateUserActivities} activities={activities}/> 
                 
@@ -120,7 +152,7 @@ function convertUser(id:number,username:string,role:UserRole, activities:Activit
                     <Route path="/add" element={<AddActivityPage activities={activities} setActivities={setActivities} onAddActivity={onAddActivity} />} />
 
         </Route>
-        <Route path='/view' element={<ViewUsers/>}/>
+        <Route path='/view' element={<ViewUsers users={users}/>}/>
       </Routes>
     </div>
   );

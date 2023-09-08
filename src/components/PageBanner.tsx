@@ -8,6 +8,8 @@ interface PageBannerProps{
     activities:Activity[];
     password:string;
 
+    handleRemoveActivity:(activityId: number) => void;
+
 }
 export default function PageBanner(props:PageBannerProps):JSX.Element{
     return(
@@ -26,6 +28,7 @@ export default function PageBanner(props:PageBannerProps):JSX.Element{
                         
                         <p>{activity.maxCount}</p>
                          <p>{activity.date.toLocaleString()}</p>
+                         <button onClick={() => props.handleRemoveActivity(activity.id)}>Cancel Activity</button>
                         
 
                     </li>
