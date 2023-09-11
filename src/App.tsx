@@ -22,7 +22,7 @@ function App() {
     fetch('/users')
       .then((response) => response.json())
       .then((data) => {
-        setUsers(data);
+        setUsers(data.map((user:User)=> convertUser(user.id, user.username, user.role, user.activities, user.password)));
         console.log(data); // Här loggar du den hämtade användardata
       });
   }, []);

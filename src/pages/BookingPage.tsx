@@ -29,7 +29,7 @@ function BookingPage(props:BookinPageProps): JSX.Element {
          
             <p>Max Count: {activity.maxCount}</p>
             {/* Pass the activity as a prop to BookingButton */}
-            <BookingButton loggedInUser={loggedInUser} updateUserActivities={props.upDateUserActivities} activity={activity} />
+            <BookingButton activities={props.activities} loggedInUser={loggedInUser} updateUserActivities={props.upDateUserActivities} activity={activity} />
           </li>
         ))}
       </ul>
